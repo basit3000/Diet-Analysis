@@ -16,12 +16,14 @@ Track your food intake, calculate calories, and log your daily consumption autom
 
 📁 Folder Structure
 
+```text
 diet-tracker/
 ├── .env                   # Environment variable file
 ├── main.py                # Main script
 ├── key.json               # Google API credentials (NOT public)
 ├── diet_log.txt           # Local history logger
 ├── README.md              # This file
+```
 
 🔧 Requirements
 
@@ -35,7 +37,9 @@ diet-tracker/
 
 Install dependencies:
 
-``` pip install gspread oauth2client ```
+```bash 
+pip install gspread oauth2client
+```
 
 🔐 Setup Google Sheets API
 
@@ -63,9 +67,7 @@ Install dependencies:
 
     Update the environment variable or use the example.env:
 
-    Run the app:
-
-    ```python main.py```
+    Run the app: python main.py
 
     Select a food, enter grams, and click Add.
 
