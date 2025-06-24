@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from oauth2client.service_account import ServiceAccountCredentials
 import os, gspread, datetime
 from dotenv import load_dotenv
@@ -8,6 +8,7 @@ load_dotenv()
 SHEET_NAME = os.getenv("SHEET_NAME")
 SHEET_NUMBER = os.getenv("SHEET_NUMBER")
 SHEET_NUMBER2 = os.getenv("SHEET_NUMBER2")
+SHEET_NUMBER3 = os.getenv("SHEET_NUMBER3")
 
 day_to_row = {
     "Monday": 2,
@@ -24,9 +25,30 @@ creds = ServiceAccountCredentials.from_json_keyfile_name("key.json", scope)
 client = gspread.authorize(creds)
 sheet = client.open(SHEET_NAME).worksheet(SHEET_NUMBER)
 sheet2 = client.open(SHEET_NAME).worksheet(SHEET_NUMBER2)
+sheet3 = client.open(SHEET_NAME).worksheet(SHEET_NUMBER3)
+date_cells = sheet3.get("A2:A1000")  
+
+dates = []
+
+def get_monday_cell():
+    today = datetime.date.today()
+    monday = today - datetime.timedelta(days=today.weekday())  
+    start_row = 2 
+    for idx, row in enumerate(date_cells):
+        if row and row[0]:
+            date_str = row[0].strip()
+            try:
+                d = datetime.datetime.strptime(date_str, "%d/%m/%Y").date()
+                if d == monday:
+                    actual_row = start_row + idx
+                    cell_address = f"A{actual_row}"
+                    return cell_address 
+            except ValueError:
+                print(f"Skipping invalid date format: {date_str}")
+    return None
 
 start_item = 2
-food_items = sheet.get("A2:A31")
+food_items = sheet.get("A2:A32")
 food_items = [item[0] for item in food_items if item]
 
 root = Tk()
@@ -118,5 +140,42 @@ def add_grams_and_calories():
 
 add_button = Button(frame, text="Add Grams → Log Calories", command=add_grams_and_calories)
 add_button.grid(row=4, column=0, pady=10)
+
+def send_data_to_logs():
+    cell_address = get_monday_cell()  
+    if not cell_address:
+        status_label.config(text="Monday date not found in sheet.")
+        return
+
+    start_row = int(''.join(filter(str.isdigit, cell_address)))
+
+    days_data = sheet2.get("B2:E8")
+    calories_days = [row[0] if len(row) > 0 else "" for row in days_data]
+    protein_days = [row[3] if len(row) > 3 else "" for row in days_data]
+
+    calories_range = f"C{start_row}:C{start_row + 6}"
+    protein_range = f"G{start_row}:G{start_row + 6}"
+
+    calories_days_2d = [[float(val)] if val != "" else [""] for val in calories_days]
+    protein_days_2d = [[float(val)] if val != "" else [""] for val in protein_days]
+
+    sheet3.update(calories_range, calories_days_2d)
+    sheet3.update(protein_range, protein_days_2d)
+
+    sheet2.update("B2:B8", [[""] for _ in range(7)])
+    sheet2.update("E2:E8", [[""] for _ in range(7)])
+
+    messagebox.showinfo("Notice", "✅ Applied!\nThe program will now close. Please don’t press the button again until next week.")
+    root.quit()
+
+add_button = Button(frame, text="Send data to Logs (Please note: it is end of week)", command=send_data_to_logs)
+add_button.grid(row=6, column=0, pady=10)
+
+def quit_app():
+    messagebox.showinfo("Notice", "Closing the application.")
+    root.quit()
+
+quit_button = Button(frame, text="Quit Program", command=quit_app, fg="red")
+quit_button.grid(row=7, column=0, pady=10)
 
 root.mainloop()
