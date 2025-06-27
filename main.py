@@ -47,6 +47,19 @@ def get_monday_cell():
                 print(f"Skipping invalid date format: {date_str}")
     return None
 
+def get_today_row_from_weightsheet():
+    today = datetime.date.today().strftime("%d/%m/%Y")
+    start_row = 2  # Assuming dates start at A2
+    date_cells = sheet3.get("A2:A1000")  # Adjust range as needed
+
+    for idx, row in enumerate(date_cells):
+        if row and row[0].strip():
+            cell_date = row[0].strip()
+            if cell_date == today:
+                return start_row + idx  
+    return None  
+
+
 start_item = 2
 food_items = sheet.get("A2:A32")
 food_items = [item[0] for item in food_items if item]
@@ -67,6 +80,10 @@ dropdown.grid(row=1, column=0, padx=5, pady=5)
 Label(frame, text="Enter amount in grams:").grid(row=2, column=0)
 grams_entry = Entry(frame, width=20)
 grams_entry.grid(row=3, column=0, padx=5, pady=5)
+
+Label(frame, text="Enter today's weight (kg):").grid(row=7, column=0)
+weight_entry = Entry(frame, width=20)
+weight_entry.grid(row=8, column=0, padx=5, pady=5)
 
 status_label = Label(frame, text="")
 status_label.grid(row=5, column=0)
@@ -171,11 +188,35 @@ def send_data_to_logs():
 add_button = Button(frame, text="Send data to Logs (Please note: it is end of week)", command=send_data_to_logs)
 add_button.grid(row=6, column=0, pady=10)
 
+def log_today_weight():
+    weight = weight_entry.get()
+    if not weight:
+        status_label.config(text="Please enter today's weight.")
+        return
+
+    try:
+        weight_value = float(weight)
+    except ValueError:
+        status_label.config(text="Invalid weight value.")
+        return
+
+    row_number = get_today_row_from_weightsheet()
+    if not row_number:
+        status_label.config(text="Today's date not found in sheet.")
+        return
+
+    weight_cell = f"I{row_number}"
+    sheet3.update(weight_cell, [[weight_value]])
+    status_label.config(text=f"✅ Weight {weight_value} kg logged to {weight_cell}")
+
+log_weight_button = Button(frame, text="Log Today’s Weight", command=log_today_weight)
+log_weight_button.grid(row=9, column=0, pady=10)
+
 def quit_app():
     messagebox.showinfo("Notice", "Closing the application.")
     root.quit()
 
 quit_button = Button(frame, text="Quit Program", command=quit_app, fg="red")
-quit_button.grid(row=7, column=0, pady=10)
+quit_button.grid(row=10, column=0, pady=10)
 
 root.mainloop()
