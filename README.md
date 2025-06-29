@@ -53,7 +53,7 @@ pip install gspread oauth2client
 
 🚀 How to Use
 
-    Prepare a Google Sheet with:
+    Prepare a Google Sheet with or use the Example Diet Analysis excel sheet by uploading to Google sheets:
 
         Column A: Food item names (e.g., from A2 to A31)
 
@@ -64,6 +64,24 @@ pip install gspread oauth2client
         Column B (Sheet 2): Rows 2–8 reserved for Monday–Sunday calorie logs
 
         Column E (Sheet 2): Rows 2-8 reserved for Monday-Sunday protein logs
+
+        Column A (Sheet 3): Rows 2-1000 reserved for days of the year
+
+        Column C (Sheet 3): Rows 2-1000 corresponding to the days column; the total caloric amount
+ 
+        Column G (Sheet 3): Rows 2-1000 corresponding to the days column; the total protein amount
+
+        Column I (Sheet 3): Rows 2-1000 current weight of the day in column A
+
+        If you want to upload to Google Sheets:
+
+        1. Go to Google Sheets
+
+        2. Click on Blank spreadsheet
+        
+        3. Click on Open > Upload > Example Diet Analysis.xlsx
+
+        4. Click Open
 
     Update the environment variable or use the example.env:
 
