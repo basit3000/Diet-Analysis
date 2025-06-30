@@ -153,7 +153,8 @@ def add_grams_and_calories():
     sheet2.update_cell(target_row, 2, round(updated_total, 2))
     sheet2.update_cell(target_row, 5, round(updated_total2, 2))
     log_entry(food, grams, calories_to_add, protein_to_add)
-    status_label.config(text=f"Logged {round(calories_to_add, 2)} cal and {round (protein_to_add, 2)} protein from {grams}g of {food}")
+    status_label.config(text=f"Logged {round(calories_to_add, 2)} cal and {round (protein_to_add, 2)} protein from {grams}g of {food}")    # After successful logging
+    messagebox.showinfo("Success", f"{round(calories_to_add, 2)} cal and {round(protein_to_add, 2)} g protein logged.")
 
 add_button = Button(frame, text="Add Grams → Log Calories", command=add_grams_and_calories)
 add_button.grid(row=4, column=0, pady=10)
@@ -208,6 +209,8 @@ def log_today_weight():
     weight_cell = f"I{row_number}"
     sheet3.update(weight_cell, [[weight_value]])
     status_label.config(text=f"✅ Weight {weight_value} kg logged to {weight_cell}")
+    messagebox.showinfo("Success", f"Weight {weight_value} kg logged to {weight_cell}.")
+
 
 log_weight_button = Button(frame, text="Log Today’s Weight", command=log_today_weight)
 log_weight_button.grid(row=9, column=0, pady=10)
