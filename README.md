@@ -1,12 +1,12 @@
 # Diet Tracker & Calorie Logger with Google Sheets
 
-Track your food intake, calculate calories, and log your daily consumption automatically into Google Sheets — all through a simple Python GUI.
+Track your food intake, calculate calories and protein, log your weight, and record your daily consumption automatically into Google Sheets — all through a simple Python GUI.
 
 ✨ Features:
 
     ✅ Select food items from a defined list
 
-    ✅ Input custom grams to automatically calculate calories
+    ✅ Input custom grams to automatically calculate calories and protein
 
     ✅ Automatically logs to correct weekday row in your Google Sheet
 
@@ -14,14 +14,22 @@ Track your food intake, calculate calories, and log your daily consumption autom
 
     ✅ Uses a dynamic dropdown and clean Tkinter UI
 
+    ✅ Log your daily weight to Google Sheets
+
+    ✅ Send weekly calorie/protein data to a logs sheet at end of week
+
 📁 Folder Structure
 
 ```text
 diet-tracker/
-├── .env                   # Environment variable file
+├── .env                   # Environment variable file (copy from example.env)
+├── example.env            # Example environment variable template
 ├── main.py                # Main script
 ├── key.json               # Google API credentials (NOT public)
 ├── diet_log.txt           # Local history logger
+├── extracode.txt          # Extra code snippets
+├── requirements.txt       # Python dependencies
+├── LICENSE                # MIT License
 ├── README.md              # This file
 ```
 
@@ -33,12 +41,14 @@ diet-tracker/
 
     gspread
 
-    oauth2client
+    google-auth
+
+    python-dotenv
 
 Install dependencies:
 
 ```bash 
-pip install gspread oauth2client
+pip install -r requirements.txt
 ```
 
 🔐 Setup Google Sheets API
