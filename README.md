@@ -18,6 +18,12 @@ Track your food intake, calculate calories and protein, log your weight, and rec
 
     ✅ Send weekly calorie/protein data to a logs sheet at end of week
 
+    ✅ Today's Summary card with calorie/protein progress bars against daily goals
+
+    ✅ Searchable food dropdown with a live nutrition preview as you type
+
+    ✅ Press Enter to log food/weight, with non-intrusive inline status messages
+
 📁 Folder Structure
 
 ```text
@@ -93,7 +99,8 @@ pip install -r requirements.txt
 
         4. Click Open
 
-    Update the environment variable or use the example.env:
+    Update the environment variable or use the example.env
+    (optionally set CALORIE_GOAL and PROTEIN_GOAL for the summary card):
 
     Run the app: python main.py
 
