@@ -52,10 +52,13 @@ sudo apt install python3-tk
 
 ## Setup
 
+The commands below use `python3`; use `python` instead if that is how Python 3
+is exposed on your system.
+
 1. Create a virtual environment and install the Python dependencies:
 
    ```bash
-   python -m venv .venv
+   python3 -m venv .venv
    source .venv/bin/activate
    pip install -r requirements.txt
    ```
@@ -99,7 +102,7 @@ sudo apt install python3-tk
 5. Run the app from the project root so it can find `.env` and `key.json`:
 
    ```bash
-   python main.py
+   python3 main.py
    ```
 
 ## Spreadsheet contract
